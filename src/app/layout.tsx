@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
 import "./globals.css";
-
-// const inter = Inter({ subsets: ["latin"] });
+import { ChartDataProvider } from "./hooks/ChartDataContext";
 
 export const metadata: Metadata = {
   title: "Apex Chart Test Project",
@@ -16,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <ChartDataProvider> 
+          {children}
+        </ChartDataProvider>
+      </body>
     </html>
   );
 }
