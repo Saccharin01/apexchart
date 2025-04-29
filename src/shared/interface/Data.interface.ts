@@ -5,3 +5,7 @@ export interface ProductDTO {
   create_at : Date,
   update_at : Date
 }
+
+export default interface SensorUnitIds {
+  chipIds: string[];
+}
