@@ -1,52 +1,53 @@
+"use client";
+
 import React from "react";
 import dynamic from "next/dynamic";
-import { useEffect,useState } from "react";
-import fetchData from "./FetchData/fetchData";
-import { ProductDTO } from "@/shared/interface/Data.interface";
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {ssr: false});
+import { useChartData } from "@/app/hooks/ChartDataContext";
+import dayjs from "dayjs";
 
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
+export default function ChartComponent() {
+  const { chartData, categories } = useChartData();
 
-export default function Chart() {
-  const [testSeries, setTestSeries] = useState<ApexAxisChartSeries>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  // 데이터가 없거나 카테고리가 없는 경우
+  if (!chartData.length || !categories.length) {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <p className="text-gray-600 text-lg">데이터가 존재하지 않습니다</p>
+      </div>
+    );
+  }
 
-  const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL;
-
-  useEffect(() => {
-    if (!baseURL) return;
-
-    const loadData = async () => {
-      try {
-        const data: ProductDTO[] = await fetchData(baseURL, "/product/all");
-
-        const names = data.map(item => item.name); // x축에 표시될 이름들
-        const stock = data.map(item => item.stock);   // y축 값 (판매량, 예시)
-
-        setCategories(names);
-        setTestSeries([
-          {
-            name: "재고",
-            data: stock,
-          },
-        ]);
-
-      } catch (error) {
-        console.error("데이터 패칭 실패:", error instanceof Error ? error.message : error);
-        throw error;
-      }
-    };
-
-    loadData();
-  }, [baseURL]);
+  const formattedCategories = categories.map(time => dayjs(time).format("HH:mm"));
+  const slicedData = chartData;
+  const slicedCategories = formattedCategories;
 
   const options: ApexCharts.ApexOptions = {
+    chart: {
+      type: "line",
+      zoom: {
+        enabled: true,
+        type: "x",
+        autoScaleYaxis: true,
+      },
+      toolbar: {
+        autoSelected: "zoom",
+        tools: {
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          reset: true,
+        },
+      },
+    },
     dataLabels: {
       enabled: true,
     },
     xaxis: {
-      categories: categories,
-      tickAmount: categories.length,
+      categories: slicedCategories,
+      tickAmount: Math.min(slicedCategories.length, 30),
       labels: {
         rotate: 0,
       },
@@ -55,12 +56,10 @@ export default function Chart() {
       {
         breakpoint: 768,
         options: {
+          chart: { toolbar: { show: false } },
           xaxis: {
-            tickAmount: 4,
-            labels: {
-              rotate: -45,
-              trim: true,
-            },
+            tickAmount: 5,
+            labels: { rotate: -45, trim: true },
           },
         },
       },
@@ -71,9 +70,9 @@ export default function Chart() {
     <div id="chart">
       <ReactApexChart
         options={options}
-        series={testSeries}
+        series={[{ name: "습도", data: slicedData }]}
         type="line"
-        height={500}
+        height={400}
       />
     </div>
   );
