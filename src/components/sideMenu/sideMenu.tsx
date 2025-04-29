@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SensorUnitIds from "@/shared/interface/Data.interface";
+import { SensorUnitIds,SensorResponseDTO } from "@/shared/interface/Data.interface";
 import fetchData from "../FetchData/fetchData";
+import SensorIdButton from "./sensorIdButton/sensroIdButton";
+import { useChartData } from "@/app/hooks/ChartDataContext";
+
 
 export default function SideMenu() {
+  const { setChartData, setCategories } = useChartData();
   const [chipIds, setChipIds] = useState<string[]>([]);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUnitIds = async () => {
@@ -21,21 +24,35 @@ export default function SideMenu() {
     fetchUnitIds();
   }, []);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleButtonClick = async (chipId: string) => {
+    try {
+      const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
+      const response = await fetchData<SensorResponseDTO>(
+        baseURL,
+        `/sensor/data?chipId=${chipId}`
+      );
+  
+      // 응답 형식: { chipId, name, location, data: [{ sensedData, sensedTime }] }
+      const values = response.data.map(items => items.sensedData);
+      const times = response.data.map(items => items.sensedTime);
+  
+      setChartData(values);
+      setCategories(times);
+    } catch (e) {
+      console.error("차트 데이터 요청 실패:", e);
+    }
+  };
 
   return (
-    <aside className={`bg-gray-800 text-white p-4 w-64 transition-transform transform ${
-      isMenuOpen ? "translate-x-0" : "-translate-x-full"
-    } md:translate-x-0 fixed md:relative z-20`}>
+    <aside className="bg-gray-800 text-white p-4 w-64 h-screen">
       <h2 className="text-xl font-bold mb-4">Sensor Units</h2>
       <div className="flex flex-col gap-2">
         {chipIds.map((chipId) => (
-          <button
+          <SensorIdButton
             key={chipId}
-            className="bg-gray-700 hover:bg-gray-600 p-2 rounded text-left"
-          >
-            {chipId}
-          </button>
+            chipId={chipId}
+            onClick={handleButtonClick}
+          />
         ))}
       </div>
     </aside>
