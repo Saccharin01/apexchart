@@ -9,7 +9,9 @@ export default function Home() {
       <SideMenu />
       <main className="flex-1 ml-0 md:p-6 bg-gray-50">
         <h1 className="text-3xl font-bold mb-6">Hello World!</h1>
-        <ChartComponent />
+        <div className="w-full h-96 bg-gray-100 rounded-lg shadow p-4">
+          <ChartComponent />
+        </div>
       </main>
     </div>
   );
