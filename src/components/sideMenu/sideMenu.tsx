@@ -8,7 +8,10 @@ import { useChartData } from "@/app/hooks/ChartDataContext";
 
 
 export default function SideMenu() {
-  const { setChartData, setCategories } = useChartData();
+
+  const { setSensorData } = useChartData();
+
+
   const [chipIds, setChipIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -31,13 +34,8 @@ export default function SideMenu() {
         baseURL,
         `/sensor/data?chipId=${chipId}`
       );
-  
-      // 응답 형식: { chipId, name, location, data: [{ sensedData, sensedTime }] }
-      const values = response.data.map(items => items.sensedData);
-      const times = response.data.map(items => items.sensedTime);
-  
-      setChartData(values);
-      setCategories(times);
+        setSensorData(response);
+      console.log(response)
     } catch (e) {
       console.error("차트 데이터 요청 실패:", e);
     }
