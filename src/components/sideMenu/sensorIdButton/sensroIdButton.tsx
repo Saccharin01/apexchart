@@ -1,12 +1,14 @@
 "use client";
 
-import sensorIdButtonInterface from "./sensorIdButtonInterface";
+import SensorIdButtonInterface from "./sensorIdButtonInterface";
 
-export default function SensorIdButton ({ chipId, onClick }: sensorIdButtonInterface) {
+export default function SensorIdButton({ chipId, selected, onSelect }: SensorIdButtonInterface) {
   return (
     <button
-      onClick={() => onClick(chipId)}
-      className="bg-gray-700 hover:bg-gray-600 p-2 rounded text-left"
+      onClick={() => onSelect(chipId)}
+      className={`w-full p-2 rounded text-center transition ${
+        selected ? "bg-blue-600" : "bg-gray-700 hover:bg-gray-600"
+      }`}
     >
       {chipId}
     </button>

@@ -1,4 +1,5 @@
-export default interface sensorIdButtonInterface {
+export default interface SensorIdButtonInterface {
   chipId: string;
-  onClick: (chipId: string) => void;
+  selected: boolean;
+  onSelect: (chipId: string) => void;
 }
