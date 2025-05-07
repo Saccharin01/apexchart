@@ -8,6 +8,7 @@ export default function HourSelector({
     <label className="text-sm">
       기준 시간:
       <select
+        name="hourSelect"
         className="text-black px-2 py-1 rounded"
         value={selectedHour}
         onChange={(e) => onChange(e.target.value)}

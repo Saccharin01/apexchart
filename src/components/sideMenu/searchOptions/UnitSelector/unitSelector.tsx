@@ -3,6 +3,7 @@ import unitSelectorInterface from "./unitSelectorInterface";
 
 
 export default function UnitSelector({ type, setType, resetDate }: unitSelectorInterface) {
+
   return (
     <div className="text-sm flex flex-col gap-2">
       <span className="font-semibold">검색 단위:</span>
@@ -12,8 +13,7 @@ export default function UnitSelector({ type, setType, resetDate }: unitSelectorI
             key={unit}
             onClick={() => {
               setType(unit);
-              resetDate();
-            }}
+              resetDate(); }}
             className={`px-2 py-1 rounded ${
               type === unit ? "bg-blue-600 text-white" : "bg-gray-300 text-black"
             }`}

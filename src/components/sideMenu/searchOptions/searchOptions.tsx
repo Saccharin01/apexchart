@@ -56,6 +56,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
         <label className="text-sm">
           연도:
           <select
+            name="yearSelect"
             className="text-black px-2 py-1 rounded"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
@@ -74,6 +75,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
           <label className="text-sm">
             기준 날짜:
             <input
+              name="indexDate"
               type={type === "month" ? "month" : "date"}
               className="text-black px-2 py-1 rounded"
               value={selectedDate}
@@ -91,6 +93,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
           <label className="text-sm">
             방향:
             <select
+              name="ascDesc"
               className="text-black px-2 py-1 rounded"
               value={direction}
               onChange={(e) => setDirection(e.target.value as Direction)}
@@ -103,6 +106,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
           <label className="text-sm">
             데이터 개수:
             <input
+              name="limit"
               type="number"
               min={1}
               max={100}
