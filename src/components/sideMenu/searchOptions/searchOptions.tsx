@@ -74,7 +74,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
           <label className="text-sm">
             기준 날짜:
             <input
-              type="date"
+              type={type === "month" ? "month" : "date"}
               className="text-black px-2 py-1 rounded"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
