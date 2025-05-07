@@ -18,9 +18,14 @@ export default function ChartComponent() {
     );
   }
 
-  const chartData = sensorData.data.map((items) => items.sensedData);
-  const categories = sensorData.data.map((items) =>
-    dayjs(items.sensedTime).format("HH:mm")
+  // 전송된 데이터 오름차순 정렬
+  const sortedData = [...sensorData.data].sort((a, b) =>
+    new Date(a.sensedTime).getTime() - new Date(b.sensedTime).getTime()
+  );
+
+  const chartData = sortedData.map((item) => item.sensedData);
+  const categories = sortedData.map((item) =>
+    dayjs(item.sensedTime).format("HH:mm")
   );
 
   const options: ApexCharts.ApexOptions = {
