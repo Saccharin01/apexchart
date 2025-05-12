@@ -21,8 +21,8 @@ export default function SideMenu() {
   useEffect(() => {
     const fetchUnitIds = async () => {
       try {
-        const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
-        const response = await fetchData<SensorUnitIds>(baseURL, "/sensor");
+        const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL as string;
+        const response = await fetchData<SensorUnitIds>(baseURL, "/sensor/units");
         setChipIds(response.chipIds);
       } catch (error) {
         console.error(error);
@@ -37,7 +37,7 @@ export default function SideMenu() {
       const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
       const response = await fetchData<SensorResponseDTO>(
         baseURL,
-        `/sensor/data?chipId=${chipId}`
+        `/sensor/units/basic?chipId=${chipId}`
       );
       setSensorData(response);
     } catch (e) {
@@ -45,18 +45,6 @@ export default function SideMenu() {
     }
   };
 
-  const handleSearch = async (queryString: string) => {
-    try {
-      const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
-      const response = await fetchData<SensorResponseDTO>(
-        baseURL,
-        `/sensor/data?${queryString}`
-      );
-      setSensorData(response);
-    } catch (e) {
-      console.error("검색 요청 실패:", e);
-    }
-  };
   return (
     <aside className="bg-gray-800 text-white p-4 w-64 h-screen flex flex-col gap-4">
       {/* 상단: 센서 유닛 버튼 영역 */}
