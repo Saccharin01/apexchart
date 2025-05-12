@@ -23,7 +23,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
     const query = queryStringBuilder({
       chipId,
       type,
-      baseDate: selectedDate,
+      selectedDate: selectedDate,
       selectedHour: selectedHour,
       direction: direction,
       count: count,
@@ -33,7 +33,7 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
       const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
       const result = await fetchData<SensorResponseDTO>(
         baseURL,
-        `/sensor/data?${query}`
+        `/sensor/units/search?${query}`
       );
       setSensorData(result);
     } catch (e) {
