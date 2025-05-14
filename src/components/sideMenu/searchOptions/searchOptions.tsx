@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useChartData } from "@/app/hooks/ChartDataContext";
 import fetchData from "@/components/FetchData/fetchData";
 import { SensorResponseDTO } from "@/shared/interface/Data.interface";
@@ -14,11 +14,17 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
   const { setSensorData } = useChartData();
 
   const [type, setType] = useState<Type>("year");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState("2020");
   const [selectedHour, setSelectedHour] = useState("00");
   const [direction, setDirection] = useState<Direction>("before");
   const [count, setCount] = useState(10);
 
+  
+  useEffect(() => {
+    console.log("선택된 연도:", selectedDate);
+  }, [selectedDate]);
+
+  
   const handleSearch = async () => {
     const query = queryStringBuilder({
       chipId,
@@ -28,7 +34,6 @@ export default function SearchOptions({ chipId }: SearchOptionsProps) {
       direction: direction,
       count: count,
     });
-
     try {
       const baseURL = process.env.NEXT_PUBLIC_REQUEST_BASE_URL!;
       const result = await fetchData<SensorResponseDTO>(
