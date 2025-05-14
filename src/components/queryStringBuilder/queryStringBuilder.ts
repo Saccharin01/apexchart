@@ -1,6 +1,8 @@
 import { queryStringBuilderInterface } from "./queryStringBuilderInterface";
 
-export function queryStringBuilder (params: queryStringBuilderInterface): string {
+export function queryStringBuilder(
+  params: queryStringBuilderInterface
+): string {
   const query = new URLSearchParams();
 
   query.set("chipId", params.chipId);
@@ -8,11 +10,30 @@ export function queryStringBuilder (params: queryStringBuilderInterface): string
 
   let finalDate = "";
 
-  if (params.type === "hour" && params.selectedDate && params.selectedHour) {
-    finalDate = `${params.selectedDate} ${params.selectedHour}:00:00`;
-  } else if (params.selectedDate) {
-    finalDate = `${params.selectedDate} 00:00:00`;
-  }
+switch (params.type) {
+  case "hour":
+    if (params.selectedDate && params.selectedHour) {
+      finalDate = `${params.selectedDate} ${params.selectedHour}:00:00`;
+    }
+    break;
+
+  case "month":
+    if (params.selectedDate) {
+      finalDate = `${params.selectedDate}-01 00:00:00`;
+    }
+    break;
+
+  case "day":
+    if (params.selectedDate) {
+      finalDate = `${params.selectedDate} 00:00:00`;
+    }
+    break;
+ //여기가 문제임 selectedDate 값이 없을것.
+  case "year":
+    if (params.selectedDate.length === 4) { // ⚠ 확실히 연도만 왔을 때 처리
+      finalDate = `${params.selectedDate}-01-01 00:00:00`;}
+    break;
+}
 
   if (finalDate) query.set("selectedDate", finalDate);
 
