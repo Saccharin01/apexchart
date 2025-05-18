@@ -22,3 +22,9 @@ export interface SensorResponseDTO {
   location: string;
   data: SensorDataDTO[];
 }
+
+export interface AggregatedDataDTO {
+  label: string;         // x축 표시용 예: "1월", "2월" ...
+  averageValue: number;  // 평균 센서 값
+  sampleCount : number
+}
