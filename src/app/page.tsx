@@ -2,7 +2,14 @@
 
 import SideMenu from "@/components/sideMenu/sideMenu";
 import ChartComponent from "../components/chart";
-import { useChartData } from "@/app/hooks/ChartDataContext"; // 컨텍스트 훅 가져오기
+import { useChartData } from "@/app/hooks/ChartDataContext";
+import type { SensorResponseDTO, AggregatedDataDTO } from "@/shared/interface/Data.interface";
+import { ChartData } from "@/shared/static.types";
+
+
+function isSensorResponseDTO(data: ChartData | null): data is SensorResponseDTO {
+  return data !== null && !Array.isArray(data) && "name" in data;
+}
 
 export default function Home() {
   const { sensorData } = useChartData();
@@ -12,10 +19,10 @@ export default function Home() {
       <SideMenu />
       <main className="flex-1 ml-0 md:p-6 bg-gray-50">
         <h1 className="text-3xl font-bold mb-2">
-          {sensorData?.name ? sensorData.name : "Hello World!"}
+          {isSensorResponseDTO(sensorData) ? sensorData.name : "Hello World!"}
         </h1>
 
-        {sensorData?.location && (
+        {isSensorResponseDTO(sensorData) && sensorData.location && (
           <p className="text-gray-500 mb-6">📍 {sensorData.location}</p>
         )}
 
