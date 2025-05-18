@@ -46,7 +46,7 @@ export default function SideMenu() {
   };
 
   return (
-    <aside className="bg-gray-800 text-white p-4 w-64 h-screen flex flex-col gap-4">
+    <aside className="bg-gray-800 text-white p-4 w-[17rem] h-screen flex flex-col gap-4">
       {/* 상단: 센서 유닛 버튼 영역 */}
       <div className="h-1/2 flex flex-col justify-between">
         <div>
