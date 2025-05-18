@@ -1,17 +1,13 @@
-"use client"
+"use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import type { SensorResponseDTO } from "@/shared/interface/Data.interface";
-
-interface ChartDataContextType {
-  sensorData: SensorResponseDTO | null;
-  setSensorData: (data: SensorResponseDTO) => void;
-}
+import ChartDataContextType from "./chartDataContext.interface";
+import { ChartData } from "@/shared/static.types";
 
 const ChartDataContext = createContext<ChartDataContextType | undefined>(undefined);
 
 export const ChartDataProvider = ({ children }: { children: ReactNode }) => {
-  const [sensorData, setSensorData] = useState<SensorResponseDTO | null>(null);
+  const [sensorData, setSensorData] = useState<ChartData | null>(null);
 
   return (
     <ChartDataContext.Provider value={{ sensorData, setSensorData }}>
